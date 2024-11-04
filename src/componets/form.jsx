@@ -2,7 +2,7 @@ import React from 'react'
 import '/form.css'
 import axios from 'axios';
 
-function form(typeOfAction) {
+function form(typeOfAction, setResult) {
 
     const [formData, setFormData] = useState({
         String: '',
@@ -18,12 +18,16 @@ function form(typeOfAction) {
         axios.post(apiUrl,formData).then((res)=>{
             if(res.status == 200){
                 setSubmitted(true)
-
+                e.currentTarget.reset()
                 //DISPLAY HERE
                 setFormData({...formData, String:'',Seed:''})
+                setResult(res.data)
             }else{
                 alert("Something went wrong please try again")
             }
+        }).catch(error =>{
+            console.log("Something went wrong")
+            console.log(error)
         })
 
     }
