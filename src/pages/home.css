@@ -1,0 +1,20 @@
+section{
+    border: solid white 3px;
+    border-radius: 10px;
+    margin-bottom: 3rem;
+    div{
+        border-top: 3px solid white;
+        border-bottom: 3px solid white;
+        h3{
+            padding: 0px;
+            margin: 0px;
+        }
+        textarea{
+            width: 90%;
+            height: 5rem;
+        }
+    }
+}
+.hidden{
+    display: none;
+}
