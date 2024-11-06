@@ -1,5 +1,6 @@
 package org.example.examcicd.controller;
 
+import org.example.examcicd.CryptographyService;
 import org.example.examcicd.models.MessageRequest;
 import org.example.examcicd.models.ResponseMessage;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,17 +15,17 @@ class MainControllerTest {
     MainController controller;
     @BeforeEach
     void setUp() {
-        controller = new MainController();
+        controller = new MainController(new CryptographyService());
     }
 
     @Test
     void encodeInvalidInputs(){
-        MessageRequest mStringNull = new MessageRequest(null,"a");
-        MessageRequest mStringEmpty = new MessageRequest("","a");
-        MessageRequest mStringOK = new MessageRequest("a","a");
-        MessageRequest mSeedNull = new MessageRequest("a",null);
-        MessageRequest mSeedEmpty = new MessageRequest("a","");
-        MessageRequest mSeedOK = new MessageRequest("a","a");
+        MessageRequest mStringNull = new MessageRequest(null,"aa");
+        MessageRequest mStringEmpty = new MessageRequest("","aa");
+        MessageRequest mStringOK = new MessageRequest("aa","aa");
+        MessageRequest mSeedNull = new MessageRequest("aa",null);
+        MessageRequest mSeedEmpty = new MessageRequest("aa","");
+        MessageRequest mSeedOK = new MessageRequest("aa","aa");
 
 
         ResponseEntity<ResponseMessage> cStringNull = controller.encodeMessage(mStringNull);
@@ -45,12 +46,12 @@ class MainControllerTest {
 
     @Test
     void decodeInvalidInputs(){
-        MessageRequest mStringNull = new MessageRequest(null,"a");
-        MessageRequest mStringEmpty = new MessageRequest("","a");
-        MessageRequest mStringOK = new MessageRequest("a","a");
-        MessageRequest mSeedNull = new MessageRequest("a",null);
-        MessageRequest mSeedEmpty = new MessageRequest("a","");
-        MessageRequest mSeedOK = new MessageRequest("a","a");
+        MessageRequest mStringNull = new MessageRequest(null,"aa");
+        MessageRequest mStringEmpty = new MessageRequest("","aa");
+        MessageRequest mStringOK = new MessageRequest("aa","aa");
+        MessageRequest mSeedNull = new MessageRequest("aa",null);
+        MessageRequest mSeedEmpty = new MessageRequest("aa","");
+        MessageRequest mSeedOK = new MessageRequest("aa","aa");
 
 
         ResponseEntity<ResponseMessage> cStringNull = controller.decodeMessage(mStringNull);
