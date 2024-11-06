@@ -3,8 +3,16 @@ package org.example.examcicd;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileReader;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,24 +25,32 @@ class CryptographyServiceTest {
         cryptographyService = new CryptographyService();
     }
     @Test
-    void encryptInvalidInputs() {
+    void encryptInvalidInputs() throws Exception{
         String sNull = null;
         String sEmpty = "";
         String sValid = "Hej";
+        String sToShort = "H";
 
+        URI uri = this.getClass().getResource("/LongString").toURI();
+        String realyLong = Files.readString(Paths.get(uri));
 
 
         NullPointerException StringNullAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.encrypt(sNull, sValid));
         NullPointerException SeedNullAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.encrypt(sValid, sNull));
         NullPointerException StringEmptyAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.encrypt(sEmpty, sValid));
         NullPointerException SeedEmptyAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.encrypt(sValid, sEmpty));
+        NullPointerException StringToShortAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.encrypt(sToShort, sValid));
 
 
+
+        assertDoesNotThrow(()-> cryptographyService.encrypt(realyLong, sValid));
+        assertDoesNotThrow(()-> cryptographyService.encrypt(sValid, realyLong));
         assertDoesNotThrow(()-> cryptographyService.encrypt(sValid, sValid));
         assertEquals("Input parameters can not be null",StringNullAssertion.getMessage());
         assertEquals("Input parameters can not be null",SeedNullAssertion.getMessage());
         assertEquals("Input parameters can not be empty",StringEmptyAssertion.getMessage());
         assertEquals("Input parameters can not be empty",SeedEmptyAssertion.getMessage());
+        assertEquals("String is to short, need atleast 2 bytes",StringToShortAssertion.getMessage());
     }
 
     @Test
@@ -64,6 +80,7 @@ class CryptographyServiceTest {
         String sNull = null;
         String sEmpty = "";
         String sValid = "Hej";
+
 
         NullPointerException NullAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.generateHash(sNull));
         NullPointerException EmptyAssertion = assertThrows(NullPointerException.class,()-> cryptographyService.generateHash(sEmpty));
@@ -97,8 +114,27 @@ class CryptographyServiceTest {
         String encrypted1 = cryptographyService.encrypt(testString1,hash1);
         String decrypted1 = cryptographyService.decrypt(encrypted1,hash1);
         assertEquals(testString1, decrypted1);
-
     }
+
+     @Test
+    void reversabiltiyLongString() throws Exception{
+        URI uri = this.getClass().getResource("/LongString").toURI();
+        String realyLong = Files.readString(Paths.get(uri));
+        String testString1 = "This is a test";
+        String encrypted1 = cryptographyService.encrypt(realyLong,testString1);
+        String decrypted1 = cryptographyService.decrypt(encrypted1,testString1);
+        assertEquals(realyLong, decrypted1);
+    }
+     @Test
+    void reversabiltiyLongHash() throws Exception{
+        URI uri = this.getClass().getResource("/LongString").toURI();
+        String realyLong = Files.readString(Paths.get(uri));
+        String testString1 = "This is a test";
+        String encrypted1 = cryptographyService.encrypt(testString1,realyLong);
+        String decrypted1 = cryptographyService.decrypt(encrypted1,realyLong);
+        assertEquals(testString1, decrypted1);
+    }
+
       @Test
     void diffrentHashesGivesDiffrentResults(){
         String testString1 = "This is a test";
