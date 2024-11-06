@@ -8,10 +8,10 @@ class testControllerTest {
 
     @Test
     public void verifyFuctionality(){
-        MessageRequest mr = new MessageRequest("apa123");
+        org.example.examcicd.MessageRequest mr = new org.example.examcicd.MessageRequest("apa123");
 
         testController tc = new testController();
-        ResponseMessage ec = tc.encodeMessage(mr);
+        org.example.examcicd.ResponseMessage ec = tc.encodeMessage(mr);
         assertEquals(ec.getResult(),"APA123");
     }
 
