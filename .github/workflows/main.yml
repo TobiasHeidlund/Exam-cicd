@@ -2,9 +2,9 @@ name: Build and Test Java Spring Boot Application
 
 on:
   push:
-    branches: [ "*" ]
+    branches: [ "ba*" ]
   pull_request:
-    branches: [ '*' ]
+    branches: [ 'ba*' ]
 
 jobs:
   build:
@@ -25,3 +25,19 @@ jobs:
 
     - name: Run Tests
       run: mvn test
+
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - run: mvn --batch-mode --update-snapshots verify
+      - run: mkdir staging && cp target/*.jar staging
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: staging
