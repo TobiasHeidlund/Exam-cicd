@@ -3,6 +3,9 @@ package org.example.examcicd;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CryptographyServiceTest {
@@ -35,11 +38,11 @@ class CryptographyServiceTest {
     }
     @Test
     void reversablilityBase64(){
-        String s = "Hello World";
+        byte[] s = "Hello World".getBytes(StandardCharsets.UTF_8);
 
         String value = cryptographyService.toBase64(s);
-        String result = cryptographyService.fromBase64(value);
+        byte[] result = cryptographyService.fromBase64(value);
 
-        assertEquals(s,result);
+        assertTrue(Arrays.equals(s,result));
     }
 }
