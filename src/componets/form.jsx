@@ -1,13 +1,13 @@
-import React from 'react'
-import '/form.css'
+import React,{useState} from 'react'
+import './form.css'
 import axios from 'axios';
 
-function form(typeOfAction, setResult) {
+function form({typeOfAction, setResult}) {
 
     const [formData, setFormData] = useState({
-        String: '',
-        Seed: '',
-        Encrypt: '',
+        string: '',
+        seed: '',
+        encrypt: (typeOfAction=="Encrypt"),
       });
     const [submitted, setSubmitted] = useState(false);
     const apiUrl = import.meta.env.VITE_BACKENDURL;
@@ -15,13 +15,18 @@ function form(typeOfAction, setResult) {
     const onSubmit = (e)=>{
         e.preventDefault()
         console.log(formData)
-        axios.post(apiUrl,formData).then((res)=>{
+        const jsonData = JSON.stringify(formData);
+        console.log(jsonData)
+        axios.post(apiUrl+"/"+typeOfAction,jsonData,{headers:{
+            'Content-Type': 'application/json',
+        }}).then((res)=>{
             if(res.status == 200){
                 setSubmitted(true)
-                e.currentTarget.reset()
+                e.target.reset()
                 //DISPLAY HERE
-                setFormData({...formData, String:'',Seed:''})
-                setResult(res.data)
+                setFormData({...formData, string:'',seed:''})
+                console.log(res.data)
+                setResult(res.data["result"])
             }else{
                 alert("Something went wrong please try again")
             }
@@ -38,12 +43,10 @@ function form(typeOfAction, setResult) {
             [name]: value // Update the specific field in state
         });
     };
-  return 
-  (
-    <form onSubmit={onsubmit}>
-        <input type="text" placeholder={'String to' + typeOfAction} name='String' onChange={handleChange}/>
-        <input type="text" placeholder='Encryption Seed' name='Seed'  onChange={handleChange} />
-        <input type="hidden" name="Encrypt" value={(typeOfAction=="Encrypt")}  onChange={handleChange} />
+  return (
+    <form onSubmit={onSubmit}>
+        <textarea type="text" placeholder={"String to " + typeOfAction} name='string' onChange={handleChange}/>
+        <input type="text" placeholder='Encryption Seed' name='seed'  onChange={handleChange} />
         <input type="submit" />
     </form>
   )
