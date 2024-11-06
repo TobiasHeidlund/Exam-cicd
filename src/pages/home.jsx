@@ -20,7 +20,7 @@ function home() {
             {console.log(encrypt)}
             <div className={(decrypt==="")?"hidden":"result"}>
                 <h3>Result:</h3>
-                <textarea type="text" readOnly/>
+                <textarea type="text" readOnly value={decrypt}/>
             </div>
             <Form typeOfAction={"Decode"} setResult={setDecrypt}></Form>
         </section>

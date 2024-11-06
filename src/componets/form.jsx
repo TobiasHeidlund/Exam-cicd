@@ -25,7 +25,6 @@ function form({typeOfAction, setResult}) {
                 e.target.reset()
                 //DISPLAY HERE
                 setFormData({...formData, string:'',seed:''})
-                console.log(res.data)
                 setResult(res.data["result"])
             }else{
                 alert("Something went wrong please try again")
