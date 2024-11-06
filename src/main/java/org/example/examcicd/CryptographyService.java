@@ -9,10 +9,15 @@ import java.util.Base64;
 @Service
 public class CryptographyService {
     public String encrypt(String plainText, String seed) {
-        return plainText+seed;
+        byte[] encoded = encode3(plainText,seed);
+        String b64 = toBase64(encoded);
+        return b64;
     }
     public String decrypt(String cipherText, String seed) {
-        return cipherText+seed;
+
+        byte[] encoded = fromBase64(cipherText);
+        String decoded = decode3(encoded,seed);
+        return decoded;
     }
 
     private int generateHash(String seed){
@@ -20,16 +25,15 @@ public class CryptographyService {
     }
 
 
-    protected String toBase64(String s){
+    protected String toBase64(byte[] s){
         Base64.Encoder encoder = Base64.getEncoder();
-        byte[] orignal = s.getBytes(StandardCharsets.UTF_8);
-        return encoder.encodeToString(orignal);
+        return encoder.encodeToString(s);
 
     }
-    protected String fromBase64(String s){
+    protected byte[] fromBase64(String s){
         Base64.Decoder decoder = Base64.getDecoder();
         byte[] decoded =  decoder.decode(s);
-        return new String(decoded, StandardCharsets.UTF_8);
+        return decoded;
     }
 
     protected byte[] encode3(String text,String seed){
