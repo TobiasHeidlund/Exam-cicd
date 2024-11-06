@@ -9,18 +9,25 @@ import java.util.Base64;
 @Service
 public class CryptographyService {
     public String encrypt(String plainText, String seed) {
+        if(plainText == null || seed == null) throw new NullPointerException("Input parameters can not be null");
+        if(plainText.isBlank() || seed.isBlank()) throw new NullPointerException("Input parameters can not be empty");
+        if(plainText.getBytes(StandardCharsets.UTF_8).length <2) throw new NullPointerException("String is to short, need atleast 2 bytes");
         byte[] encoded = encode3(plainText,seed);
         String b64 = toBase64(encoded);
         return b64;
     }
     public String decrypt(String cipherText, String seed) {
+        if(cipherText == null || seed == null) throw new NullPointerException("Input parameters can not be null");
+        if(cipherText.isBlank() || seed.isBlank()) throw new NullPointerException("Input parameters can not be empty");
 
         byte[] encoded = fromBase64(cipherText);
         String decoded = decode3(encoded,seed);
         return decoded;
     }
 
-    private int generateHash(String seed){
+    protected int generateHash(String seed){
+        if(seed == null) throw new NullPointerException("Input parameters can not be null");
+        if(seed.isBlank()) throw new NullPointerException("Input parameters can not be empty");
         return seed.hashCode();
     }
 

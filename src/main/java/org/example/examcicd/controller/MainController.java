@@ -14,6 +14,12 @@ public class MainController {
     @Autowired
     CryptographyService cryptographyService;
 
+    public MainController() {}
+    public MainController(CryptographyService cryptographyService) {
+        this.cryptographyService = cryptographyService;
+    }
+
+
     @PostMapping("/Encode")
     @CrossOrigin(origins = "http://localhost:5173")
     public ResponseEntity<ResponseMessage> encodeMessage(@RequestBody MessageRequest request) {
@@ -21,6 +27,7 @@ public class MainController {
         if(request.getSeed().isBlank()) {return new ResponseEntity<>(new ResponseMessage("Please enter a seed"), HttpStatus.BAD_REQUEST);}
         if(request.getString() == null) {return new ResponseEntity<>(new ResponseMessage("Please enter a string"), HttpStatus.BAD_REQUEST);}
         if(request.getString().isBlank()) {return new ResponseEntity<>(new ResponseMessage("Please enter string"), HttpStatus.BAD_REQUEST);}
+        if(request.getString().length()<2) {return new ResponseEntity<>(new ResponseMessage("Please enter string a longer string (min 2 bytes utf-8)"), HttpStatus.BAD_REQUEST);}
 
         ResponseMessage encodedMessage = new ResponseMessage(cryptographyService.encrypt(request.getString(), request.getSeed()));
         return new ResponseEntity<>(encodedMessage, HttpStatus.OK);
