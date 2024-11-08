@@ -13,21 +13,21 @@ describe('<form />', () => {
     })
 
     it("Can Se",()=>{
-      cy.get("input[name=Seed]").should("be.visible")
-      cy.get("textarea[name=String]").should("be.visible")
+      cy.get("input[name=seed]").should("be.visible")
+      cy.get("textarea[name=string]").should("be.visible")
       cy.get("input[type=submit]").should("be.visible")
     })
 
     it("Can Type Seed",()=>{
-      cy.get("input[name=Seed]").type("abc123").then(()=>{
-        cy.get("input[name=Seed]").invoke("val").should("eq","abc123")
+      cy.get("input[name=seed]").type("abc123").then(()=>{
+        cy.get("input[name=seed]").invoke("val").should("eq","abc123")
       })
     
     })
 
     it("Can Type String",()=>{
-      cy.get("textarea[name=String]").type("abc124").then(()=>{
-        cy.get("textarea[name=String]").invoke("val").should("eq","abc124")
+      cy.get("textarea[name=string]").type("abc124").then(()=>{
+        cy.get("textarea[name=string]").invoke("val").should("eq","abc124")
       })
     
     })

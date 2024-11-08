@@ -32,6 +32,7 @@ function form({typeOfAction, setResult}) {
         }).catch(error =>{
             console.log("Something went wrong")
             console.log(error)
+            alert("Something went wrong please try again")
         })
 
     }
@@ -44,8 +45,8 @@ function form({typeOfAction, setResult}) {
     };
   return (
     <form onSubmit={onSubmit}>
-        <textarea type="text" placeholder={"String to " + typeOfAction} name='string' onChange={handleChange}/>
-        <input type="text" placeholder='Encryption Seed' name='seed'  onChange={handleChange} />
+        <textarea type="text" placeholder={"String to " + typeOfAction} name='string' onChange={handleChange} required/>
+        <input type="text" placeholder='Encryption Seed' name='seed'  onChange={handleChange}  required/>
         <input type="submit" />
     </form>
   )
